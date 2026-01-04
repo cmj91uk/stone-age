@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { TbCheck, TbX } from 'react-icons/tb'
+import party from 'party-js'
 
 interface Question {
   question: string;
@@ -183,12 +184,15 @@ export function Quiz({ userName, theme }: { userName: string; theme: ColorTheme 
   const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
 
-  const handleAnswerClick = (index: number) => {
+  const handleAnswerClick = (index: number, target: HTMLElement) => {
     if (selectedAnswer !== null) return;
 
     setSelectedAnswer(index);
     if (index === questions[currentQuestion].correctAnswer) {
       setScore(score + 1);
+      party.confetti(target, {
+        count: party.variation.range(20, 40)
+      });
     }
   };
 
@@ -262,7 +266,7 @@ export function Quiz({ userName, theme }: { userName: string; theme: ColorTheme 
             return (
               <button
                 key={index}
-                onClick={() => handleAnswerClick(index)}
+                onClick={(e) => handleAnswerClick(index, e.currentTarget)}
                 disabled={selectedAnswer !== null}
                 className={buttonClass}
               >
