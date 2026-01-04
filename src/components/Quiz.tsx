@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { TbCheck, TbX } from 'react-icons/tb'
 
 interface Question {
   question: string;
@@ -145,7 +146,15 @@ export function Quiz() {
                 disabled={selectedAnswer !== null}
                 className={buttonClass}
               >
-                {option}
+                <div className="flex justify-between items-center w-full">
+                  <span>{option}</span>
+                  {selectedAnswer !== null && (
+                    <>
+                      {index === q.correctAnswer && <TbCheck className="text-3xl text-green-600" />}
+                      {index === selectedAnswer && index !== q.correctAnswer && <TbX className="text-3xl text-red-600" />}
+                    </>
+                  )}
+                </div>
               </button>
             );
           })}
