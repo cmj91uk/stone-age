@@ -7,6 +7,58 @@ interface Question {
   correctAnswer: number;
 }
 
+interface ColorTheme {
+  name: string
+  bgPage: string
+  bgCard: string
+  borderCard: string
+  textTitle: string
+  textPrimary: string
+  textSecondary: string
+  bgScore: string
+  textScore: string
+  bgButton: string
+  bgButtonHover: string
+  borderOption: string
+  borderOptionHover: string
+  bgOptionHover: string
+}
+
+const colorOptions: ColorTheme[] = [
+  {
+    name: 'Amber',
+    bgPage: 'bg-amber-50',
+    bgCard: 'bg-white',
+    borderCard: 'border-amber-200',
+    textTitle: 'text-amber-700',
+    textPrimary: 'text-amber-600',
+    textSecondary: 'text-stone-800',
+    bgScore: 'bg-amber-100',
+    textScore: 'text-amber-700',
+    bgButton: 'bg-amber-500',
+    bgButtonHover: 'hover:bg-amber-600',
+    borderOption: 'border-amber-100',
+    borderOptionHover: 'hover:border-amber-400',
+    bgOptionHover: 'hover:bg-amber-50'
+  },
+  {
+    name: 'Blue',
+    bgPage: 'bg-blue-50',
+    bgCard: 'bg-white',
+    borderCard: 'border-blue-200',
+    textTitle: 'text-blue-700',
+    textPrimary: 'text-blue-600',
+    textSecondary: 'text-slate-800',
+    bgScore: 'bg-blue-100',
+    textScore: 'text-blue-700',
+    bgButton: 'bg-blue-500',
+    bgButtonHover: 'hover:bg-blue-600',
+    borderOption: 'border-blue-100',
+    borderOptionHover: 'hover:border-blue-400',
+    bgOptionHover: 'hover:bg-blue-50'
+  }
+]
+
 const questions: Question[] = [
   {
     question: "What did Stone Age people use to make their tools?",
@@ -61,6 +113,7 @@ const questions: Question[] = [
 ];
 
 export function Quiz() {
+  const [currentTheme] = useState(colorOptions[1]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -94,13 +147,13 @@ export function Quiz() {
 
   if (showResults) {
     return (
-      <div className="min-h-screen bg-amber-50 flex flex-col items-center justify-center p-4 text-stone-800 font-sans">
-        <div className="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full text-center border-4 border-amber-200">
-          <h1 className="text-4xl font-bold mb-6 text-amber-700">Quiz Finished!</h1>
-          <p className="text-2xl mb-8">You scored <span className="font-bold text-amber-600">{score}</span> out of {questions.length}</p>
+      <div className={`min-h-screen ${currentTheme.bgPage} flex flex-col items-center justify-center p-4 ${currentTheme.textSecondary} font-sans`}>
+        <div className={`${currentTheme.bgCard} p-8 rounded-3xl shadow-xl max-w-md w-full text-center border-4 ${currentTheme.borderCard}`}>
+          <h1 className={`text-4xl font-bold mb-6 ${currentTheme.textTitle}`}>Quiz Finished!</h1>
+          <p className="text-2xl mb-8">You scored <span className={`font-bold ${currentTheme.textPrimary}`}>{score}</span> out of {questions.length}</p>
           <button
             onClick={resetQuiz}
-            className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-8 rounded-2xl text-xl transition-colors shadow-lg"
+            className={`w-full ${currentTheme.bgButton} ${currentTheme.bgButtonHover} text-white font-bold py-4 px-8 rounded-2xl text-xl transition-colors shadow-lg`}
           >
             Play Again
           </button>
@@ -112,11 +165,11 @@ export function Quiz() {
   const q = questions[currentQuestion];
 
   return (
-    <div className="min-h-screen bg-amber-50 flex flex-col items-center justify-center p-4 text-stone-800 font-sans">
-      <div className="max-w-2xl w-full bg-white p-8 rounded-3xl shadow-xl border-4 border-amber-200">
+    <div className={`min-h-screen ${currentTheme.bgPage} flex flex-col items-center justify-center p-4 ${currentTheme.textSecondary} font-sans`}>
+      <div className={`max-w-2xl w-full ${currentTheme.bgCard} p-8 rounded-3xl shadow-xl border-4 ${currentTheme.borderCard}`}>
         <div className="mb-8 flex justify-between items-center">
-          <span className="text-amber-600 font-bold text-lg">Question {currentQuestion + 1} of {questions.length}</span>
-          <span className="bg-amber-100 px-4 py-1 rounded-full text-amber-700 font-semibold">Score: {score}</span>
+          <span className={`${currentTheme.textPrimary} font-bold text-lg`}>Question {currentQuestion + 1} of {questions.length}</span>
+          <span className={`${currentTheme.bgScore} px-4 py-1 rounded-full ${currentTheme.textScore} font-semibold`}>Score: {score}</span>
         </div>
 
         <h2 className="text-3xl font-bold mb-10 text-center leading-tight">
@@ -128,7 +181,7 @@ export function Quiz() {
             let buttonClass = "w-full text-left p-6 rounded-2xl text-xl font-semibold transition-all border-2 ";
 
             if (selectedAnswer === null) {
-              buttonClass += "border-amber-100 hover:border-amber-400 hover:bg-amber-50 bg-white";
+              buttonClass += `${currentTheme.borderOption} ${currentTheme.borderOptionHover} ${currentTheme.bgOptionHover} ${currentTheme.bgCard}`;
             } else {
               if (index === q.correctAnswer) {
                 buttonClass += "border-green-500 bg-green-100 text-green-800 ring-4 ring-green-200";
@@ -163,7 +216,7 @@ export function Quiz() {
         {selectedAnswer !== null && (
           <button
             onClick={handleNextQuestion}
-            className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-4 px-8 rounded-2xl text-2xl transition-all shadow-lg animate-bounce mt-4"
+            className={`w-full ${currentTheme.bgButton} ${currentTheme.bgButtonHover} text-white font-bold py-4 px-8 rounded-2xl text-2xl transition-all shadow-lg animate-bounce mt-4`}
           >
             {currentQuestion === questions.length - 1 ? "See Results" : "Next Question →"}
           </button>
