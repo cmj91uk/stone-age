@@ -7,7 +7,7 @@ interface Question {
   correctAnswer: number;
 }
 
-interface ColorTheme {
+export interface ColorTheme {
   name: string
   bgPage: string
   bgCard: string
@@ -24,7 +24,7 @@ interface ColorTheme {
   bgOptionHover: string
 }
 
-const colorOptions: ColorTheme[] = [
+export const colorOptions: ColorTheme[] = [
   {
     name: 'Amber',
     bgPage: 'bg-amber-50',
@@ -56,6 +56,70 @@ const colorOptions: ColorTheme[] = [
     borderOption: 'border-blue-100',
     borderOptionHover: 'hover:border-blue-400',
     bgOptionHover: 'hover:bg-blue-50'
+  },
+  {
+    name: 'Purple',
+    bgPage: 'bg-purple-50',
+    bgCard: 'bg-white',
+    borderCard: 'border-purple-200',
+    textTitle: 'text-purple-700',
+    textPrimary: 'text-purple-600',
+    textSecondary: 'text-slate-800',
+    bgScore: 'bg-purple-100',
+    textScore: 'text-purple-700',
+    bgButton: 'bg-purple-500',
+    bgButtonHover: 'hover:bg-purple-600',
+    borderOption: 'border-purple-100',
+    borderOptionHover: 'hover:border-purple-400',
+    bgOptionHover: 'hover:bg-purple-50'
+  },
+  {
+    name: 'Pink',
+    bgPage: 'bg-pink-50',
+    bgCard: 'bg-white',
+    borderCard: 'border-pink-200',
+    textTitle: 'text-pink-700',
+    textPrimary: 'text-pink-600',
+    textSecondary: 'text-slate-800',
+    bgScore: 'bg-pink-100',
+    textScore: 'text-pink-700',
+    bgButton: 'bg-pink-500',
+    bgButtonHover: 'hover:bg-pink-600',
+    borderOption: 'border-pink-100',
+    borderOptionHover: 'hover:border-pink-400',
+    bgOptionHover: 'hover:bg-pink-50'
+  },
+  {
+    name: 'Green',
+    bgPage: 'bg-emerald-50',
+    bgCard: 'bg-white',
+    borderCard: 'border-emerald-200',
+    textTitle: 'text-emerald-700',
+    textPrimary: 'text-emerald-600',
+    textSecondary: 'text-slate-800',
+    bgScore: 'bg-emerald-100',
+    textScore: 'text-emerald-700',
+    bgButton: 'bg-emerald-500',
+    bgButtonHover: 'hover:bg-emerald-600',
+    borderOption: 'border-emerald-100',
+    borderOptionHover: 'hover:border-emerald-400',
+    bgOptionHover: 'hover:bg-emerald-50'
+  },
+  {
+    name: 'Red',
+    bgPage: 'bg-rose-50',
+    bgCard: 'bg-white',
+    borderCard: 'border-rose-200',
+    textTitle: 'text-rose-700',
+    textPrimary: 'text-rose-600',
+    textSecondary: 'text-slate-800',
+    bgScore: 'bg-rose-100',
+    textScore: 'text-rose-700',
+    bgButton: 'bg-rose-500',
+    bgButtonHover: 'hover:bg-rose-600',
+    borderOption: 'border-rose-100',
+    borderOptionHover: 'hover:border-rose-400',
+    bgOptionHover: 'hover:bg-rose-50'
   }
 ]
 
@@ -112,8 +176,8 @@ const questions: Question[] = [
   }
 ];
 
-export function Quiz() {
-  const [currentTheme] = useState(colorOptions[1]);
+export function Quiz({ userName, theme }: { userName: string; theme: ColorTheme }) {
+  const [currentTheme] = useState(theme);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -149,7 +213,7 @@ export function Quiz() {
     return (
       <div className={`min-h-screen ${currentTheme.bgPage} flex flex-col items-center justify-center p-4 ${currentTheme.textSecondary} font-sans`}>
         <div className={`${currentTheme.bgCard} p-8 rounded-3xl shadow-xl max-w-md w-full text-center border-4 ${currentTheme.borderCard}`}>
-          <h1 className={`text-4xl font-bold mb-6 ${currentTheme.textTitle}`}>Quiz Finished!</h1>
+          <h1 className={`text-4xl font-bold mb-6 ${currentTheme.textTitle}`}>Well done, {userName}!</h1>
           <p className="text-2xl mb-8">You scored <span className={`font-bold ${currentTheme.textPrimary}`}>{score}</span> out of {questions.length}</p>
           <button
             onClick={resetQuiz}
@@ -167,6 +231,9 @@ export function Quiz() {
   return (
     <div className={`min-h-screen ${currentTheme.bgPage} flex flex-col items-center justify-center p-4 ${currentTheme.textSecondary} font-sans`}>
       <div className={`max-w-2xl w-full ${currentTheme.bgCard} p-8 rounded-3xl shadow-xl border-4 ${currentTheme.borderCard}`}>
+        <div className="mb-4 text-center">
+          <span className={`text-xl font-bold ${currentTheme.textPrimary}`}>Good luck, {userName}!</span>
+        </div>
         <div className="mb-8 flex justify-between items-center">
           <span className={`${currentTheme.textPrimary} font-bold text-lg`}>Question {currentQuestion + 1} of {questions.length}</span>
           <span className={`${currentTheme.bgScore} px-4 py-1 rounded-full ${currentTheme.textScore} font-semibold`}>Score: {score}</span>
